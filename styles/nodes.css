@@ -1,0 +1,115 @@
+.node {
+	position: absolute;
+	font-size: 24px;
+	color: var(--text-color);
+	min-width: 300px;
+}
+
+.nodebox {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	min-height: 50px;
+	background: #14141445;
+	border-bottom-left-radius: 16px;
+	border-bottom-right-radius: 16px;
+	box-shadow: var(--shadow-data);
+	backdrop-filter: blur(5.9px);
+	-webkit-backdrop-filter: blur(5.9px);
+	border: 1px solid #1414144f;
+	z-index: 5;
+}
+
+.nodeheader {
+	cursor: move;
+	width: 100%;
+	position: relative;
+	background: linear-gradient(to right, #28c96b15, transparent), #36363660;
+	border-top-left-radius: 16px;
+	border-top-right-radius: 16px;
+	box-shadow: var(--shadow-data);
+	backdrop-filter: blur(5.9px);
+	-webkit-backdrop-filter: blur(5.9px);
+	border: 1px solid #1414144f;
+	z-index: 10;
+}
+
+.nodeheader .nodename {
+	position: relative;
+	margin: 10px 40px;
+}
+
+.canvasargument {
+	position: relative;
+	margin-top: 10px;
+	width: 30px;
+	height: 30px;
+	/* border: 5px solid white; */
+}
+
+.left {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+	margin-right: auto;
+}
+
+.left .label {
+	margin-right: auto;
+	left: 0px;
+	display: flex ;
+	flex-direction: row;
+}
+
+.left .label label {
+	margin-left: 10px;
+	margin-top: auto;
+	margin-right: auto;
+	bottom: 0px;
+}
+
+.left .input {
+	margin-left: 10px;
+	margin-top: 5px;
+	margin-right: 10px;
+	left: 0px;
+	display: flex ;
+	flex-direction: row;
+	min-width: 70px;
+}
+
+.left .input input {
+	margin-right: auto;
+}
+
+.right {
+	margin-left: auto;
+	right: 0px;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.right .label {
+	position: relative;
+	right: 0px;
+	display: flex ;
+	flex-direction: row;
+}
+
+.right .label label {
+	margin-right: 10px;
+	margin-left: auto;
+	margin-top: auto;
+	bottom: 0px;
+}
+
+.right canvas {
+	margin-right: 10px;
+	margin-left: auto;
+	right: 0px;
+	bottom: 0px;
+}

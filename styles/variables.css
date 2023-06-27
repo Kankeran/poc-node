@@ -1,0 +1,8 @@
+:root {
+	--body-background-color: #292929;
+	--body-primary-gradient-color: #212121;
+	--body-secondary-gradient-color: #303030;
+	--text-color: #c0c0c0;
+	--shadow-data: 0 4px 30px #1414141a;
+	--fade-in: 250ms;
+}

@@ -1,0 +1,41 @@
+@import "variables.css";
+@import "menus.css";
+@import "nodes.css";
+@import "inputs.css";
+
+body {
+	top: 5px;
+	left: 5px;
+	height: 103px;
+	background:
+		repeating-linear-gradient(to right,
+			transparent,
+			transparent 117px,
+			var(--body-primary-gradient-color) 117px,
+			var(--body-primary-gradient-color) 119px),
+		repeating-linear-gradient(to bottom,
+			transparent,
+			transparent 117px,
+			var(--body-primary-gradient-color) 117px,
+			var(--body-primary-gradient-color) 119px),
+		repeating-linear-gradient(to right,
+			transparent,
+			transparent 15px,
+			var(--body-secondary-gradient-color) 15px,
+			var(--body-secondary-gradient-color) 17px),
+		repeating-linear-gradient(to bottom,
+			transparent,
+			transparent 15px,
+			var(--body-secondary-gradient-color) 15px,
+			var(--body-secondary-gradient-color) 17px),
+		var(--body-background-color);
+}
+
+/* @media print {
+	body {
+		width: 21cm;
+		height: 29.7cm;
+		margin: 15mm 22mm 15mm 22mm;
+	}
+} */
+

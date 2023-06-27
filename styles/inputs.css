@@ -1,0 +1,4 @@
+input[type="number"] {
+	min-width: 70px;
+	width: 40%;
+}
