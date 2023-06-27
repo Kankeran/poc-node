@@ -6,16 +6,17 @@ export class Argument {
         this.dataType = dataType;
         this.id = "argument" + ++argumentAmount;
         if (parent.dataset.type == Common.inType) {
-            parent.appendChild(this.createInDiv(parent.dataset.type));
+            parent.appendChild(this.createInDiv(parent.dataset.type, parent));
         }
         else {
-            parent.appendChild(this.createOutDiv(parent.dataset.type));
+            parent.appendChild(this.createOutDiv(parent.dataset.type, parent));
         }
     }
-    createInDiv(type) {
+    createInDiv(type, parent) {
         let div = document.createElement('div');
         let labelDiv = document.createElement('div');
         labelDiv.classList.add("label");
+        labelDiv.id = parent.id.slice(0, 5) + "labeldiv";
         new Circle(labelDiv, type, this);
         let label = document.createElement('label');
         label.innerHTML = this.dataType;
@@ -31,10 +32,11 @@ export class Argument {
         div.appendChild(inputDiv);
         return div;
     }
-    createOutDiv(type) {
+    createOutDiv(type, parent) {
         let div = document.createElement('div');
         let labelDiv = document.createElement('div');
         labelDiv.classList.add("label");
+        labelDiv.id = parent.id.slice(0, 5) + "labeldiv";
         let label = document.createElement('label');
         label.innerHTML = this.dataType;
         labelDiv.appendChild(label);

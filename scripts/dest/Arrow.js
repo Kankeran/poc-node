@@ -9,6 +9,7 @@ export class Arrow {
         this.lineId = '';
         this.id = "arrow" + ++arrowAmount;
         this.type = parent.dataset.type;
+        this.parent = parent;
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.id;
         Common.applySize(this.canvas, Common.canvasSize * 3);
@@ -47,7 +48,10 @@ export class Arrow {
         return this.lineId != '';
     }
     canConnect() {
-        return this.type == Common.inType;
+        return this.type == Common.inType && !this.isConnected();
+    }
+    canConnectTo(arrow) {
+        return this.parent.id.slice(0, 5) != arrow.parent.id.slice(0, 5) && this.canConnect();
     }
     Clear() {
         const ctx = this.canvas.getContext('2d');
@@ -73,10 +77,10 @@ export class Arrow {
         line.End = new Point(toX, toY);
         line.Draw();
     }
-    getObjectByPoint(point) {
+    getObjectByPoint(point, toArrow) {
         for (const [_, arrow] of ArrowsMap) {
             const boundingCLient = arrow.canvas.getBoundingClientRect();
-            if (arrow.canConnect() &&
+            if (arrow.canConnectTo(toArrow) &&
                 point.X > boundingCLient.left + window.scrollX &&
                 point.X < boundingCLient.right + window.scrollX &&
                 point.Y > boundingCLient.top + window.scrollY &&
@@ -98,7 +102,7 @@ export class Arrow {
         const sourceObject = this;
         document.onmouseup = closeDragElement;
         function closeDragElement(e) {
-            const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY));
+            const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY), ArrowsMap.get(line.StartId()));
             if (destinationObject != null) {
                 const boundingCLient = destinationObject.canvas.getBoundingClientRect();
                 const toX = boundingCLient.left + window.scrollX + sourceObject.canvas.offsetWidth / 2;

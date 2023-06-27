@@ -13,11 +13,13 @@ export class Circle implements Updater {
 	private style: number = 2;
 	private lineId: string = '';
 	private onConnector: OnConnector;
+	private parent: HTMLElement;
 
 	constructor(parent: HTMLElement, type: string, onConnector: OnConnector) {
 		this.id = "circle" + ++circleAmount;
 		this.type = type;
 		this.onConnector = onConnector;
+		this.parent = parent;
 
 		document.createElement('div')
 		this.canvas = document.createElement('canvas');
@@ -54,7 +56,11 @@ export class Circle implements Updater {
 	}
 
 	private canConnect(): boolean {
-		return this.type == Common.inType;
+		return this.type == Common.inType && !this.isConnected();
+	}
+
+	private canConnectTo(circle : Circle): boolean {
+		return this.parent.id.slice(0, 5) != circle.parent.id.slice(0, 5) && this.canConnect();
 	}
 
 	Element(): HTMLCanvasElement {
@@ -93,10 +99,10 @@ export class Circle implements Updater {
 		line.Draw();
 	}
 
-	private getObjectByPoint(point: Point): Circle | null {
+	private getObjectByPoint(point: Point, toCircle : Circle): Circle | null {
 		for (const [_, circle] of CirclesMap) {
 			const boundingCLient = circle.canvas.getBoundingClientRect();
-			if (circle.canConnect() &&
+			if (circle.canConnectTo(toCircle) &&
 				point.X > boundingCLient.left + window.scrollX &&
 				point.X < boundingCLient.right + window.scrollX &&
 				point.Y > boundingCLient.top + window.scrollY &&
@@ -124,7 +130,7 @@ export class Circle implements Updater {
 		document.onmouseup = closeDragElement;
 
 		function closeDragElement(e: MouseEvent) {
-			const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY));
+			const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY), CirclesMap.get(line.StartId())!);
 			if (destinationObject != null) {
 				const boundingCLient = destinationObject.canvas.getBoundingClientRect();
 				const toX = boundingCLient.left + window.scrollX + destinationObject.canvas.offsetWidth / 2;

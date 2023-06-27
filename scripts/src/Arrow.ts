@@ -12,10 +12,12 @@ export class Arrow implements Updater {
 	private type: string;
 	private style: number = 0;
 	private lineId: string = '';
+	private parent: HTMLElement;
 
 	constructor(parent: HTMLElement) {
 		this.id = "arrow" + ++arrowAmount;
 		this.type = parent.dataset.type!;
+		this.parent = parent;
 
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = this.id;
@@ -60,7 +62,11 @@ export class Arrow implements Updater {
 	}
 
 	private canConnect(): boolean {
-		return this.type == Common.inType;
+		return this.type == Common.inType && !this.isConnected();
+	}
+
+	private canConnectTo(arrow : Arrow): boolean {
+		return this.parent.id.slice(0, 5) != arrow.parent.id.slice(0, 5) && this.canConnect();
 	}
 
 	Clear(): void {
@@ -95,10 +101,10 @@ export class Arrow implements Updater {
 		line.Draw();
 	}
 
-	private getObjectByPoint(point: Point): Arrow | null {
+	private getObjectByPoint(point: Point, toArrow : Arrow): Arrow | null {
 		for (const [_, arrow] of ArrowsMap) {
 			const boundingCLient = arrow.canvas.getBoundingClientRect();
-			if (arrow.canConnect() &&
+			if (arrow.canConnectTo(toArrow) &&
 				point.X > boundingCLient.left + window.scrollX &&
 				point.X < boundingCLient.right + window.scrollX &&
 				point.Y > boundingCLient.top + window.scrollY &&
@@ -126,7 +132,7 @@ export class Arrow implements Updater {
 		document.onmouseup = closeDragElement;
 
 		function closeDragElement(e: MouseEvent) {
-			const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY));
+			const destinationObject = sourceObject.getObjectByPoint(new Point(e.clientX, e.clientY), ArrowsMap.get(line.StartId())!);
 			if (destinationObject != null) {
 				const boundingCLient = destinationObject.canvas.getBoundingClientRect();
 				const toX = boundingCLient.left + window.scrollX + sourceObject.canvas.offsetWidth / 2;
