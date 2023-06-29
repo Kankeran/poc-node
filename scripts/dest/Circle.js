@@ -4,16 +4,17 @@ import { Point } from "./Point.js";
 var circleAmount = 0;
 export var CirclesMap = new Map();
 export class Circle {
-    constructor(parent, type, onConnector) {
-        this.style = 2;
+    constructor(parent, type, owner, signature, dataType) {
         this.lineId = '';
         this.id = "circle" + ++circleAmount;
         this.type = type;
-        this.onConnector = onConnector;
-        this.parent = parent;
+        this.style = Common.StyleIdForDataType(dataType);
+        this.owner = owner;
+        this.signature = signature;
         document.createElement('div');
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.id;
+        this.canvas.dataset.object = "circle";
         Common.applySize(this.canvas, Common.canvasSize * 3);
         this.canvas.classList.add("canvasargument");
         parent.appendChild(this.canvas);
@@ -45,7 +46,7 @@ export class Circle {
         return this.type == Common.inType && !this.isConnected();
     }
     canConnectTo(circle) {
-        return this.parent.id.slice(0, 5) != circle.parent.id.slice(0, 5) && this.canConnect();
+        return this.signature != circle.signature && this.style == circle.style && this.canConnect();
     }
     Element() {
         return this.canvas;
@@ -53,6 +54,10 @@ export class Circle {
     Clear() {
         const ctx = this.canvas.getContext('2d');
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+    Remove() {
+        CirclesMap.delete(this.id);
+        this.owner.OnRemove();
     }
     Id() {
         return this.id;
@@ -110,7 +115,7 @@ export class Circle {
                 destinationObject.lineId = line.Id();
                 destinationObject.Draw();
                 destinationObject.disconnectable();
-                destinationObject.onConnector.OnConnect();
+                destinationObject.owner.OnConnect();
             }
             else {
                 line.Remove();
@@ -158,12 +163,12 @@ export class Circle {
             e.preventDefault();
             if (!sourceObject.isConnected()) {
                 sourceObject.canvas.onmousedown = null;
-                sourceObject.onConnector.OnDisconnect();
+                sourceObject.owner.OnDisconnect();
                 return;
             }
             sourceObject.lineId = '';
             sourceObject.Draw();
-            sourceObject.onConnector.OnDisconnect();
+            sourceObject.owner.OnDisconnect();
             sourceObject.closeDraggable(line);
             sourceObject.draggable(line);
             sourceObject.canvas.onmousedown = null;

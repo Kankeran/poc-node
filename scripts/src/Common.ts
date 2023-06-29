@@ -5,6 +5,44 @@ export const inType = "in";
 export const outType = "out";
 export var afterDragUpdaters: Updater[] = [];
 
+export function StyleIdForDataType(dataType: string): number {
+	switch (dataType) {
+		case "int":
+			return 2;
+		case "int64":
+			return 3;
+		case "int32":
+			return 4;
+		case "int16":
+			return 5;
+		case "int8":
+			return 6;
+		case "uint":
+			return 7;
+		case "uint64":
+			return 8;
+		case "uint32":
+			return 9;
+		case "uint16":
+			return 10;
+		case "uint8":
+			return 11;
+		case "byte":
+			return 12;
+		case "string":
+			return 13;
+		case "bool":
+			return 14;
+		case "float64":
+			return 15;
+		case "float32":
+			return 16;
+		case "date":
+			return 17;
+	}
+	return 2;
+}
+
 export function applyStyle(ctx: CanvasRenderingContext2D, styleId: number) {
 	switch (styleId) {
 		case 0: {
@@ -17,11 +55,43 @@ export function applyStyle(ctx: CanvasRenderingContext2D, styleId: number) {
 			ctx.fillStyle = "#b0b0b070";
 			break;
 		}
-		case 2: {
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+		case 7:
+		case 8:
+		case 9:
+		case 10:
+		case 11:
+		case 12: {
 			ctx.strokeStyle = "red";
 			ctx.fillStyle = "red";
 			break;
 		}
+		case 13: {
+			ctx.strokeStyle = "blue";
+			ctx.fillStyle = "blue";
+			break;
+		}
+		case 14: {
+			ctx.strokeStyle = "pink";
+			ctx.fillStyle = "pink";
+			break;
+		}
+		case 15:
+		case 16: {
+			ctx.strokeStyle = "purple";
+			ctx.fillStyle = "purple";
+			break;
+		}
+		case 17: {
+			ctx.strokeStyle = "yellow";
+			ctx.fillStyle = "yellow";
+			break;
+		}
+
 	}
 
 }

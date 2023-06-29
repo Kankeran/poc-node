@@ -3,63 +3,69 @@ import * as Common from "./Common.js";
 
 var argumentAmount: number = 0;
 
+export function NextArgument(): string {
+	return "argument" + ++argumentAmount;
+}
+
+export function GetInputType(dataType: string): string {
+	switch (dataType) {
+		case "int":
+		case "int64":
+		case "int32":
+		case "int16":
+		case "int8":
+		case "uint":
+		case "uint64":
+		case "uint32":
+		case "uint16":
+		case "uint8":
+		case "byte":
+			return "number";
+		case "string":
+			return "text";
+		case "bool":
+			return "checkbox";
+		case "float64":
+		case "float32":
+			return "number";
+		case "date":
+			return "date";
+	}
+	return "checkbox";
+}
+
 export class Argument {
 	private dataType: string;
 	private id: string;
+	private mainDiv: HTMLElement;
 
 	constructor(dataType: string, parent: HTMLElement) {
 		this.dataType = dataType;
-		this.id = "argument" + ++argumentAmount;
+		this.id = NextArgument();
 
 		if (parent.dataset.type! == Common.inType) {
-			parent.appendChild(this.createInDiv(parent.dataset.type!, parent));
+			this.mainDiv = this.createInDiv(parent.dataset.type!, parent);
 		} else {
-			parent.appendChild(this.createOutDiv(parent.dataset.type!, parent));
+			this.mainDiv = this.createOutDiv(parent.dataset.type!, parent);
 		}
 	}
 
-	createInDiv(type: string, parent : HTMLElement): HTMLDivElement {
-		let div = document.createElement('div');
-		let labelDiv = document.createElement('div');
-		labelDiv.classList.add("label");
-		labelDiv.id = parent.id.slice(0, 5) + "labeldiv"
-		new Circle(labelDiv, type, this);
-		let label = document.createElement('label');
-		label.innerHTML = this.dataType;
-		label.setAttribute("for", this.id);
-		labelDiv.appendChild(label);
-		div.appendChild(labelDiv);
-		let inputDiv = document.createElement('div');
-		inputDiv.classList.add("input");
-		let input = document.createElement('input');
-		input.type = this.getType();
-		input.id = this.id;
-		inputDiv.appendChild(input);
-		div.appendChild(inputDiv);
-
-		return div
+	createInDiv(type: string, parent: HTMLElement): HTMLElement {
+		const div = new Div(parent)
+		const labelDiv = new Div(div.Element(), ["label"]);
+		new Circle(labelDiv.Element(), type, this, parent.id.slice(0, 5), this.dataType);
+		new Label(labelDiv.Element(), this.dataType, this.id);
+		const inputDiv = new Div(div.Element(), ["input"]);
+		new Input(inputDiv.Element(), this.id, GetInputType(this.dataType));
+		return div.Element();
 	}
 
-	createOutDiv(type: string, parent : HTMLElement): HTMLDivElement {
-		let div = document.createElement('div');
-		let labelDiv = document.createElement('div');
-		labelDiv.classList.add("label");
-		labelDiv.id = parent.id.slice(0, 5) + "labeldiv"
-		let label = document.createElement('label');
-		label.innerHTML = this.dataType;
-		labelDiv.appendChild(label);
-		new Circle(labelDiv, type, this);
-		div.appendChild(labelDiv);
-
-		return div;
-	}
-
-	getType(): string {
-		switch (this.dataType) {
-			case "int":
-				return "number";
-		}
-		return "checkbox";
+	createOutDiv(type: string, parent: HTMLElement): HTMLElement {
+		const div = new Div(parent)
+		const labelDiv = new Div(div.Element(), ["label"]);
+		new Label(labelDiv.Element(), this.dataType);
+		new Circle(labelDiv.Element(), type, this, parent.id.slice(0, 5), this.dataType);
+		return div.Element();
 	}
 
 	OnConnect(): void {
@@ -68,5 +74,46 @@ export class Argument {
 
 	OnDisconnect(): void {
 		document.getElementById(this.id)!.hidden = false;
+	}
+
+	OnRemove(): void {
+		this.mainDiv.parentElement!.removeChild(this.mainDiv);
+	}
+}
+
+export class Div {
+	private element: HTMLElement;
+
+	constructor(parent: HTMLElement, cssClasses: string[] = []) {
+		this.element = document.createElement('div');
+		this.element.classList.add(...cssClasses);
+		parent.appendChild(this.element);
+	}
+
+	Element(): HTMLElement {
+		return this.element;
+	}
+}
+
+export class Input {
+	private element: HTMLInputElement;
+
+	constructor(parent: HTMLElement, id: string = "", type: string = "text", cssClasses: string[] = []) {
+		this.element = document.createElement('input');
+		this.element.id = id;
+		this.element.type = type;
+		this.element.classList.add(...cssClasses);
+		parent.appendChild(this.element);
+	}
+}
+
+
+export class Label {
+
+	constructor(parent: HTMLElement, inner: string, forId: string = "") {
+		const label = document.createElement('label');
+		label.innerHTML = inner;
+		label.setAttribute("for", forId);
+		parent.appendChild(label);
 	}
 }

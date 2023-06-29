@@ -2,7 +2,8 @@ export interface Updater {
 	Update(): void;
 }
 
-export interface OnConnector {
+export interface Owner {
 	OnConnect(): void;
 	OnDisconnect(): void;
+	OnRemove(): void;
 }

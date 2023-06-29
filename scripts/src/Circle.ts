@@ -1,4 +1,4 @@
-import { OnConnector, Updater } from "./Interfaces.js";
+import { Owner, Updater } from "./Interfaces.js";
 import * as Common from "./Common.js";
 import { Line, LinesMap } from "./Line.js";
 import { Point } from "./Point.js";
@@ -10,20 +10,22 @@ export class Circle implements Updater {
 	private canvas: HTMLCanvasElement;
 	private id: string;
 	private type: string;
-	private style: number = 2;
+	private style: number ;
 	private lineId: string = '';
-	private onConnector: OnConnector;
-	private parent: HTMLElement;
+	private owner: Owner;
+	private signature: string;
 
-	constructor(parent: HTMLElement, type: string, onConnector: OnConnector) {
+	constructor(parent: HTMLElement, type: string, owner: Owner, signature : string, dataType:string) {
 		this.id = "circle" + ++circleAmount;
 		this.type = type;
-		this.onConnector = onConnector;
-		this.parent = parent;
+		this.style = Common.StyleIdForDataType(dataType);
+		this.owner = owner;
+		this.signature = signature;
 
 		document.createElement('div')
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = this.id;
+		this.canvas.dataset.object = "circle";
 		Common.applySize(this.canvas, Common.canvasSize * 3);
 		this.canvas.classList.add("canvasargument");
 		parent.appendChild(this.canvas);
@@ -60,7 +62,7 @@ export class Circle implements Updater {
 	}
 
 	private canConnectTo(circle : Circle): boolean {
-		return this.parent.id.slice(0, 5) != circle.parent.id.slice(0, 5) && this.canConnect();
+		return this.signature != circle.signature && this.style == circle.style && this.canConnect();
 	}
 
 	Element(): HTMLCanvasElement {
@@ -70,6 +72,11 @@ export class Circle implements Updater {
 	Clear(): void {
 		const ctx = this.canvas.getContext('2d')!;
 		ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
+
+	Remove(): void {
+		CirclesMap.delete(this.id);
+		this.owner.OnRemove();
 	}
 
 	Id(): string {
@@ -141,7 +148,7 @@ export class Circle implements Updater {
 				destinationObject.lineId = line.Id();
 				destinationObject.Draw();
 				destinationObject.disconnectable();
-				destinationObject.onConnector.OnConnect();
+				destinationObject.owner.OnConnect();
 			} else {
 				line.Remove();
 				if (line.StartId() != '') {
@@ -202,13 +209,13 @@ export class Circle implements Updater {
 			e.preventDefault();
 			if (!sourceObject.isConnected()) {
 				sourceObject.canvas.onmousedown = null
-				sourceObject.onConnector.OnDisconnect();
+				sourceObject.owner.OnDisconnect();
 				return;
 			}
 
 			sourceObject.lineId = '';
 			sourceObject.Draw();
-			sourceObject.onConnector.OnDisconnect();
+			sourceObject.owner.OnDisconnect();
 
 			sourceObject.closeDraggable(line!);
 			sourceObject.draggable(line!);

@@ -14,23 +14,28 @@ window.addEventListener("DOMContentLoaded", () => {
     new Arrow(node1output);
     new Arrow(node2input);
     new Arrow(node2output);
-    new Argument("int", node1input);
-    new Argument("int", node1input);
-    new Argument("int", node1output);
-    new Argument("int", node2input);
-    new Argument("int", node2input);
+    new Argument("int64", node1input);
+    new Argument("date", node1input);
+    new Argument("bool", node1output);
+    new Argument("float64", node2input);
+    new Argument("bool", node2input);
     new Argument("int", node2output);
-    new Plus(node1input);
-    new Plus(node1output);
-    new Plus(node2input);
-    new Plus(node2output);
+    new Plus(node1input, onPlusClick);
+    new Plus(node1output, onPlusClick);
+    new Plus(node2input, onPlusClick);
+    new Plus(node2output, onPlusClick);
 });
+function onPlusClick(plus) {
+    console.log("plus clicked", plus.Id());
+}
 function handleMenus() {
     const menus = document.getElementById("menus");
     document.oncontextmenu = showMenu;
-    document.onmousedown = leftClick;
     function showMenu(e) {
         e.preventDefault();
+        if (isNodeOrChildOfNode(e.target)) {
+            return;
+        }
         menus.hidden = false;
         let mainMenu = document.getElementById("mainmenu");
         mainMenu.hidden = false;
@@ -39,6 +44,7 @@ function handleMenus() {
         }, 50);
         menus.style.top = e.clientY + 'px';
         menus.style.left = e.clientX + 'px';
+        document.onmousedown = leftClick;
     }
     function leftClick(e) {
         e.preventDefault();
@@ -58,7 +64,16 @@ function handleMenus() {
         for (const child of menus.children) {
             child.classList.remove("active");
         }
+        document.onmousedown = null;
     }
+}
+function isNodeOrChildOfNode(target) {
+    for (const node of document.getElementsByClassName("node")) {
+        if (isElementOrChild(target, node)) {
+            return true;
+        }
+    }
+    return false;
 }
 function isElementOrChild(wanted, element) {
     if (wanted == element) {

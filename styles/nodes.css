@@ -32,7 +32,7 @@
 	backdrop-filter: blur(5.9px);
 	-webkit-backdrop-filter: blur(5.9px);
 	border: 1px solid #1414144f;
-	z-index: 10;
+	z-index: 5;
 }
 
 .nodeheader .nodename {

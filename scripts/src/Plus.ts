@@ -5,9 +5,12 @@ var plusAmount: number = 0;
 export class Plus {
 	private canvas: HTMLCanvasElement;
 	private id: string;
+	private parent: HTMLElement;
 
-	constructor(parent: HTMLElement) {
+	constructor(parent: HTMLElement, onClick: (plus:Plus)=>void) {
 		this.id = "plus" + ++plusAmount;
+		this.parent = parent;
+
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = this.id;
 		Common.applySize(this.canvas, Common.canvasSize * 3);
@@ -19,6 +22,9 @@ export class Plus {
 		}
 		this.canvas.onmouseleave = () => {
 			this.draw(false);
+		}
+		this.canvas.onclick = () => {
+			onClick(this);
 		}
 		this.Draw();
 	}
@@ -65,5 +71,13 @@ export class Plus {
 
 	Id(): string {
 		return this.id;
+	}
+
+	RemoveFromDom(): void {
+		this.parent.removeChild(this.canvas);
+	}
+
+	AddToDom(): void {
+		this.parent.appendChild(this.canvas);
 	}
 }

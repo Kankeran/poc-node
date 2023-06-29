@@ -21,6 +21,7 @@ export class Arrow implements Updater {
 
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = this.id;
+		this.canvas.dataset.object = "arrow";
 		Common.applySize(this.canvas, Common.canvasSize * 3);
 		this.canvas.classList.add("canvasargument");
 		parent.appendChild(this.canvas);

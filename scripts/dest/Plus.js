@@ -1,8 +1,9 @@
 import * as Common from "./Common.js";
 var plusAmount = 0;
 export class Plus {
-    constructor(parent) {
+    constructor(parent, onClick) {
         this.id = "plus" + ++plusAmount;
+        this.parent = parent;
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.id;
         Common.applySize(this.canvas, Common.canvasSize * 3);
@@ -13,6 +14,9 @@ export class Plus {
         };
         this.canvas.onmouseleave = () => {
             this.draw(false);
+        };
+        this.canvas.onclick = () => {
+            onClick(this);
         };
         this.Draw();
     }
@@ -55,5 +59,11 @@ export class Plus {
     }
     Id() {
         return this.id;
+    }
+    RemoveFromDom() {
+        this.parent.removeChild(this.canvas);
+    }
+    AddToDom() {
+        this.parent.appendChild(this.canvas);
     }
 }
