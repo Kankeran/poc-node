@@ -43,7 +43,7 @@ export class Line {
 		this.canvas.style.top = this.Start.Y - this.canvas.height / 2 + "px";
 
 		const ctx = this.canvas.getContext("2d")!;
-		Common.applyStyle(ctx, this.style);
+		Common.ApplyStyle(ctx, this.style);
 		ctx.lineWidth = 3;
 		let x1 = this.canvas.width / 2, y1 = this.canvas.height / 2,
 			x2 = x1 + this.End.X - this.Start.X, y2 = y1 + this.End.Y - this.Start.Y;

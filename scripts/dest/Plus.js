@@ -1,12 +1,15 @@
 import * as Common from "./Common.js";
+import { Menus } from "./Menus.js";
+import { Point } from "./Point.js";
 var plusAmount = 0;
 export class Plus {
     constructor(parent, onClick) {
+        this.HasMenu = false;
         this.id = "plus" + ++plusAmount;
         this.parent = parent;
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.id;
-        Common.applySize(this.canvas, Common.canvasSize * 3);
+        Common.ApplySize(this.canvas, Common.canvasSize * 3);
         this.canvas.classList.add("canvasargument");
         parent.appendChild(this.canvas);
         this.canvas.onmouseover = () => {
@@ -19,6 +22,12 @@ export class Plus {
             onClick(this);
         };
         this.Draw();
+        Menus.Instance().AddOnHidden(() => {
+            this.HasMenu = false;
+        });
+        Menus.Instance().AddShouldHide((target) => {
+            return target != this.canvas;
+        });
     }
     Draw() {
         this.draw(false);
@@ -26,7 +35,7 @@ export class Plus {
     draw(fill) {
         this.Clear();
         const ctx = this.canvas.getContext("2d");
-        Common.applyStyle(ctx, 1);
+        Common.ApplyStyle(ctx, 1);
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.moveTo(25, 10);
@@ -65,5 +74,9 @@ export class Plus {
     }
     AddToDom() {
         this.parent.appendChild(this.canvas);
+    }
+    Pos() {
+        const srcBoundingCLient = this.canvas.getBoundingClientRect();
+        return new Point(srcBoundingCLient.left + window.scrollX, srcBoundingCLient.top + window.scrollY);
     }
 }

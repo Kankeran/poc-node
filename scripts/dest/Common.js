@@ -39,7 +39,7 @@ export function StyleIdForDataType(dataType) {
     }
     return 2;
 }
-export function applyStyle(ctx, styleId) {
+export function ApplyStyle(ctx, styleId) {
     switch (styleId) {
         case 0: {
             ctx.strokeStyle = "white";
@@ -89,18 +89,18 @@ export function applyStyle(ctx, styleId) {
         }
     }
 }
-export function applySize(canvas, size) {
+export function ApplySize(canvas, size) {
     canvas.width = size;
     canvas.height = size;
 }
-export function afterDrag() {
+export function AfterDrag() {
     for (let updater of afterDragUpdaters) {
         updater.Update();
     }
 }
-export function dragElement(element) {
+export function DragElement(element) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-    document.getElementById(element.id + "header").onmousedown = dragMouseDown;
+    document.getElementById(element.id + "-header").onmousedown = dragMouseDown;
     function dragMouseDown(e) {
         e.preventDefault();
         pos3 = e.clientX;
@@ -116,10 +116,32 @@ export function dragElement(element) {
         pos4 = e.clientY;
         element.style.top = (element.offsetTop - pos2) + "px";
         element.style.left = (element.offsetLeft - pos1) + "px";
-        afterDrag();
+        AfterDrag();
     }
     function closeDragElement() {
         document.onmouseup = null;
         document.onmousemove = null;
     }
+}
+export function IsNodeOrChildOfNode(target) {
+    for (const node of document.getElementsByClassName("node")) {
+        if (IsElementOrChild(target, node)) {
+            return true;
+        }
+    }
+    return false;
+}
+export function IsElementOrChild(wanted, element) {
+    if (wanted == element) {
+        return true;
+    }
+    if (!element.hasChildNodes()) {
+        return false;
+    }
+    for (const child of element.children) {
+        if (IsElementOrChild(wanted, child)) {
+            return true;
+        }
+    }
+    return false;
 }

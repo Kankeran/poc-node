@@ -43,7 +43,7 @@ export function StyleIdForDataType(dataType: string): number {
 	return 2;
 }
 
-export function applyStyle(ctx: CanvasRenderingContext2D, styleId: number) {
+export function ApplyStyle(ctx: CanvasRenderingContext2D, styleId: number) {
 	switch (styleId) {
 		case 0: {
 			ctx.strokeStyle = "white";
@@ -96,21 +96,21 @@ export function applyStyle(ctx: CanvasRenderingContext2D, styleId: number) {
 
 }
 
-export function applySize(canvas: HTMLCanvasElement, size: number) {
+export function ApplySize(canvas: HTMLCanvasElement, size: number) {
 	canvas.width = size;
 	canvas.height = size;
 }
 
-export function afterDrag() {
+export function AfterDrag() {
 	for (let updater of afterDragUpdaters) {
 		updater.Update();
 	}
 }
 
-export function dragElement(element: HTMLElement) {
+export function DragElement(element: HTMLElement) {
 	var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-	document.getElementById(element.id + "header")!.onmousedown = dragMouseDown;
+	document.getElementById(element.id + "-header")!.onmousedown = dragMouseDown;
 
 	function dragMouseDown(e: MouseEvent) {
 		e.preventDefault();
@@ -128,11 +128,39 @@ export function dragElement(element: HTMLElement) {
 		pos4 = e.clientY;
 		element.style.top = (element.offsetTop - pos2) + "px";
 		element.style.left = (element.offsetLeft - pos1) + "px";
-		afterDrag();
+		AfterDrag();
 	}
 
 	function closeDragElement() {
 		document.onmouseup = null;
 		document.onmousemove = null;
 	}
+}
+
+export function IsNodeOrChildOfNode(target: EventTarget): boolean {
+	for (const node of document.getElementsByClassName("node")!) {
+		if (IsElementOrChild(target, node)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+export function IsElementOrChild(wanted: EventTarget, element: Element) {
+	if (wanted == element) {
+		return true;
+	}
+
+	if (!element.hasChildNodes()) {
+		return false;
+	}
+
+	for (const child of element.children) {
+		if (IsElementOrChild(wanted, child)) {
+			return true;
+		}
+	}
+
+	return false;
 }

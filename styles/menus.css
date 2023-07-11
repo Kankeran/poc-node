@@ -9,7 +9,7 @@
 
 .menu {
 	position: absolute;
-	width: 200px;
+	min-width: 200px;
 	border-radius: 16px;
 	padding: 8px;
 	opacity: 0;
@@ -37,6 +37,7 @@
 	width: 88%;
 	height: 30px;
 	margin: 5px;
+	padding: 5px;
 	background: #66666628;
 	border-radius: 8px;
 	box-shadow: var(--shadow-data);
@@ -48,6 +49,8 @@
 	user-select: none;
 	-moz-user-select: none;
 	cursor: pointer;
+	display: flex ;
+	flex-direction: row;
 }
 
 .menu li:hover {

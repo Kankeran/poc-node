@@ -1,3 +1,20 @@
+input {
+	font-size: 20px;
+	color: var(--text-color);
+	background: #66666670;
+	border-radius: 8px;
+	box-shadow: var(--shadow-data);
+	backdrop-filter: blur(5.9px);
+	-webkit-backdrop-filter: blur(5.9px);
+	border: 1px outset #1414144f;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 input[type="number"] {
 	min-width: 70px;
 	width: 40%;

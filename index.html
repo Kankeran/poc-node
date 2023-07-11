@@ -11,36 +11,66 @@
 
 <body>
 	<div class="node" id="node1">
-		<div class="nodeheader" id="node1header">
-			<div class="nodename">func asd</div>
+		<div class="node-header" id="node1-header">
+			<div class="node-name">func asd</div>
 		</div>
-		<div class="nodebox">
-			<div class="left" id="node1input" data-type="in">
+		<div class="node-box">
+			<div class="left" id="node1-input" data-type="in">
 			</div>
-			<div class="right" id="node1output" data-type="out">
+			<div class="right" id="node1-output" data-type="out">
 			</div>
 		</div>
 	</div>
 
 	</div>
 	<div class="node" id="node2">
-		<div class="nodeheader" id="node2header">
-			<div class="nodename">func asd2</div>
+		<div class="node-header" id="node2-header">
+			<div class="node-name">func asd2</div>
 		</div>
-		<div class="nodebox">
-			<div class="left" id="node2input" data-type="in">
+		<div class="node-box">
+			<div class="left" id="node2-input" data-type="in">
 			</div>
-			<div class="right" id="node2output" data-type="out">
+			<div class="right" id="node2-output" data-type="out">
 			</div>
 		</div>
 	</div>
 
-	<div id="menus" class="menus">
-		<ul id="mainmenu" class="menu" hidden>
+	<div class="menus" id="menus" >
+		<ul class="menu" id="main-menu" hidden>
 			<li>struct</li>
 			<li>func</li>
 			<li>var</li>
 			<li>const</li>
+		</ul>
+		<ul class="menu" id="menu-delete-node" hidden>
+			<li>remove node</li>
+		</ul>
+		<ul class="menu" id="menu-delete-argument" hidden>
+			<li>remove argument</li>
+		</ul>
+		<ul class="menu" id="menu-add-argument" hidden>
+			<li>
+				<select id="menu-add-argument-type">
+					<option>int</option>
+					<option>int64</option>
+					<option>int32</option>
+					<option>int16</option>
+					<option>int8</option>
+					<option>uint</option>
+					<option>uint64</option>
+					<option>uint32</option>
+					<option>uint16</option>
+					<option>uint8</option>
+					<option>byte</option>
+					<option>string</option>
+					<option>bool</option>
+					<option>float64</option>
+					<option>float32</option>
+					<option>date</option>
+				</select>
+				<input type="text" id="menu-add-argument-name">
+				<button id="menu-add-argument-button">OK!</button>
+			</li>
 		</ul>
 	</div>
 

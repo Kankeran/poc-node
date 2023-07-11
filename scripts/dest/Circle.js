@@ -15,7 +15,7 @@ export class Circle {
         this.canvas = document.createElement('canvas');
         this.canvas.id = this.id;
         this.canvas.dataset.object = "circle";
-        Common.applySize(this.canvas, Common.canvasSize * 3);
+        Common.ApplySize(this.canvas, Common.canvasSize * 3);
         this.canvas.classList.add("canvasargument");
         parent.appendChild(this.canvas);
         this.Draw();
@@ -28,7 +28,7 @@ export class Circle {
     Draw() {
         this.Clear();
         const ctx = this.canvas.getContext("2d");
-        Common.applyStyle(ctx, this.style);
+        Common.ApplyStyle(ctx, this.style);
         ctx.lineWidth = 4;
         ctx.beginPath();
         ctx.arc(Common.canvasSize * 1.5, Common.canvasSize * 1.5, Common.canvasSize, 0, 2 * Math.PI);

@@ -22,7 +22,7 @@ export class Arrow implements Updater {
 		this.canvas = document.createElement('canvas');
 		this.canvas.id = this.id;
 		this.canvas.dataset.object = "arrow";
-		Common.applySize(this.canvas, Common.canvasSize * 3);
+		Common.ApplySize(this.canvas, Common.canvasSize * 3);
 		this.canvas.classList.add("canvasargument");
 		parent.appendChild(this.canvas);
 		this.Draw();
@@ -38,7 +38,7 @@ export class Arrow implements Updater {
 	Draw(): void {
 		this.Clear();
 		const ctx = this.canvas.getContext("2d")!;
-		Common.applyStyle(ctx, 0);
+		Common.ApplyStyle(ctx, 0);
 		ctx.lineWidth = 4;
 		ctx.beginPath();
 		ctx.moveTo(10, 10);

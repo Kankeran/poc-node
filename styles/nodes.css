@@ -5,7 +5,7 @@
 	min-width: 300px;
 }
 
-.nodebox {
+.node-box {
 	position: relative;
 	display: flex;
 	flex-direction: row;
@@ -21,7 +21,7 @@
 	z-index: 5;
 }
 
-.nodeheader {
+.node-header {
 	cursor: move;
 	width: 100%;
 	position: relative;
@@ -35,7 +35,7 @@
 	z-index: 5;
 }
 
-.nodeheader .nodename {
+.node-header .node-name {
 	position: relative;
 	margin: 10px 40px;
 }
